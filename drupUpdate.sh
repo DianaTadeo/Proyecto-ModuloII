@@ -59,9 +59,3 @@ sudo tar -czvf $FILE /var/www
 #Para actualización drupal
 drush up --yes
 
-drush archive-dump
-drush vset --exact maintenance_mode 1 
-drush cache-clear all
-drush pm-update drupal
-drush vset --exact maintenance_mode 0 
-drush cache-clear all
