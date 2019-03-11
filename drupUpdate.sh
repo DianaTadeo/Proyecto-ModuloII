@@ -1,10 +1,8 @@
 #!/bin/bash
 function isinstalled {
 	if yum -q list installed $pack &>/dev/null; then
-		#echo "Si existe $pack"
 		true
 	else
-    		#echo "No existe"
 		false
   	fi
 }
@@ -55,4 +53,12 @@ else
 fi
 
 echo "Se procede a realizar el backup de /var/www. Esto puede tardar unos minutos".
+FILE="/home/backup.$NOW.tar.gz"
+sudo tar -czvf $FILE /var/www
 
+drush archive-dump
+drush vset --exact maintenance_mode 1 
+drush cache-clear all
+drush pm-update drupal
+drush vset --exact maintenance_mode 0 
+drush cache-clear all
