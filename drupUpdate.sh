@@ -9,6 +9,16 @@ function isinstalled {
   	fi
 }
 
+function isinstalled2 {
+	$pack --version > /dev/null 2>&1
+	DRUSH=$?
+	if [[ $DRUSH -ne 0 ]]; then 
+		true
+	else
+		false
+	fi
+}
+
 #clear
 echo "Se revisa si existen las siguientes dependencias..."
 if isinstalled git; then
@@ -31,6 +41,11 @@ else
 	php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 	#Si se verifico el hash, se instala el composer
 	sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+fi
+if isinstalled2 drush; then
+	echo `drush --version`
+else
+	echo "No se encuentra instalado git. Instalando"
 	#Instalando cgr
 	composer global require consolidation/cgr
 	#Agregando la direccion de cgr al path
