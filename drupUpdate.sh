@@ -56,6 +56,9 @@ echo "Se procede a realizar el backup de /var/www. Esto puede tardar unos minuto
 FILE="/home/backup.$NOW.tar.gz"
 sudo tar -czvf $FILE /var/www
 
+#Para actualización drupal
+drush up --yes
+
 drush archive-dump
 drush vset --exact maintenance_mode 1 
 drush cache-clear all
