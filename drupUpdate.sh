@@ -11,9 +11,9 @@ function isinstalled2 {
 	$pack --version > /dev/null 2>&1
 	DRUSH=$?
 	if [[ $DRUSH -ne 0 ]]; then 
-		true
-	else
 		false
+	else
+		true
 	fi
 }
 
