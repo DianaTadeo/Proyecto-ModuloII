@@ -35,7 +35,7 @@ else
 	sudo mv composer.phar /usr/local/bin/composer
 	composer --version
 fi
-if isinstalled2 drush; then
+if isinstalled drush; then
 	echo `drush --version`
 else
 	echo "No se encuentra instalado git. Instalando"
@@ -46,11 +46,15 @@ else
 	echo $PATH
 	drush init
 fi
-
+NOW=`date +%D-%H%M`
 echo "Se procede a realizar el backup de /var/www. Esto puede tardar unos minutos".
 FILE="/home/backup.$NOW.tar.gz"
 sudo tar -czvf $FILE /var/www
-
+cd /var/www/sitio1.com/drupal
+#Para actualización drupal
+drush up --yes
+cd -
+cd /var/www/sitio2.com/drupal
 #Para actualización drupal
 drush up --yes
 
