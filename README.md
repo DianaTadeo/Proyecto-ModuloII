@@ -2,7 +2,7 @@
 Actualización automática de aplicativos web en CSM Drupal 7
 
 - Si se está utilizando Deiab 8 o Debian 9, se debe ejecutar el script drushUpdateDebian.sh
-- Si se está tilizando CentOS 7 se debe ejecutar el script drushUpdate.sh
+- Si se está tilizando CentOS 7 se debe ejecutar el script drushUpdateCentOS.sh
 
 ## Para ejecutar 
 1. Antes de ejecutar el script, se recomienda ejecutar con un usuario de sudo con todos los prrmisos.
@@ -14,7 +14,7 @@ Actualización automática de aplicativos web en CSM Drupal 7
 
 Desde la linea de comandos
 ```
-./drushUpdate.sh
+./drushUpdateCentOS.sh
 ```
 o
 ```
