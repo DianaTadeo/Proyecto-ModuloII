@@ -40,7 +40,7 @@ else
 	sudo mv composer.phar /usr/local/bin/composer
 	composer --version
 fi
-if isinstalled drush; then
+if isinstalled2 drush; then
 	echo `drush --version`
 else
 	echo "No se encuentra instalado drush. Instalando"
