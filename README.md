@@ -10,6 +10,7 @@ Actualización automática de aplicativos web en CSM Drupal 7
     dentro del directorio **/tmp** con el prefijo *drupal*. Así se puede recuperar manualmente.
 3. Es necesario tener la raíz del sitio de drupal dentro del directorio **/var/www/** 
 4. Al ejecutar, recordar asegurarse de los permisos del script
+5. MUY IMPORTANTE: Colocar el script fuera del directorio **/var/www/** para que el backup funcione correctamente
 
 Desde la linea de comandos
 ```
