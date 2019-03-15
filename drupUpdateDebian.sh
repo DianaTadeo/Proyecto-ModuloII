@@ -33,7 +33,7 @@ done
 echo "Seleccione uno: "
 read val
 
-FILE="/home/usuario/Documents/respaldo"
+FILE="/home/respaldo"
 if [ $val -eq 0 ];
 then
         cd /var/www/$var0
