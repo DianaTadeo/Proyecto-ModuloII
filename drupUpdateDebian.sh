@@ -2,7 +2,7 @@
 
 #Se debe de copiar el programa a /var/www al ejecutarlo lo debe hacer un usuario normal con acceso a sudo, funciona para debian 8
 
-function isinstalled {
+function isinstalled() {
 	if apt -q list installed $pack &>/dev/null; then
 		true
 	else
@@ -10,7 +10,7 @@ function isinstalled {
   	fi
 }
 
-function isinstalled2 {
+function isinstalled2 (){
 	$pack --version > /dev/null 2>&1
 	DRUSH=$?
 	if [[ $DRUSH -ne 0 ]]; then 
@@ -20,50 +20,9 @@ function isinstalled2 {
 	fi
 }
 
-#clear
-echo "Bienvenido, se muestran los directorios: "
-c=0
-#Se listan los directorios que estan en /var/www
-for d in */; do
-        eval "var$c=$d";
-        echo $c $d
-        c=$((c+1));
-done
-
-echo "Seleccione uno: "
-read val
-
-FILE="/home/respaldo"
-if [ $val -eq 0 ];
-then
-        cd /var/www/$var0
-        echo "Se procede a realizar el backup de `pwd`. Esto puede tardar unos minutos".
-        drupa={var0::-1}
-        echo "El respaldo se se guardara en $FILE.$drupa.tar.gz"
-        sudo tar -czvf $FILE.$drupa.tar.gz ../$var0
-elif [ $val -eq 1 ];
-then
-        cd /var/www/$var1
-        echo "Se procede a realizar el backup de `pwd`. Esto puede tardar unos minutos".
-        drupa={var1::-1}
-        echo "El respaldo se se guardara en $FILE.$drupa.tar.gz"
-        sudo tar -czvf $FILE.$drupa.tar.gz ../$var1
-elif [[ $val -eq 2 ]]
-then
-        cd /var/www/$var2
-        echo "Se procede a realizar el backup de `pwd`. Esto puede tardar unos minutos".
-        drupa={var2::-1}
-        echo "El respaldo se se guardara en $FILE.$drupa.tar.gz"
-        sudo tar -czvf $FILE.$drupa.tar.gz ../$var2
-elif [[ $val -eq 3 ]]
-then
-        cd /var/www/$var3
-        echo "Se procede a realizar el backup de `pwd`. Esto puede tardar unos minutos".
-        drupa={var3::-1}
-        echo "El respaldo se se guardara en $FILE.$drupa.tar.gz"
-        sudo tar -czvf $FILE.$drupa.tar.gz ../$var3
-fi
-
+######################################################
+#####      Seccion para revisar dependencias     #####
+######################################################
 echo "Se revisa si existen las siguientes dependencias..."
 if isinstalled git; then
 	echo `git --version`
@@ -92,32 +51,150 @@ else
 	echo $PATH
 	drush init
 fi
-#NOW=`date +%D-%H%M`
-#echo "Se procede a realizar el backup de /var/www. Esto puede tardar unos minutos".
-#FILE="/home/backup.$NOW.tar.gz"
-#sudo tar -czvf $FILE /var/www
-#cd /var/www/sitio1.com/drupal
-#Para actualización drupal
-sudo drush up --yes
-#cd -
-#cd /var/www/sitio2.com/drupal
-#Para actualización drupal
-#drush up --yes
-echo "Revise la instalacion de drupal en su navegador y compruebe su funcionalidad, escoja una de las siguientes opciones: "
-echo "1.- Si funciona"
-echo "2.- No funciona, quiero regresar a la version anterior"
-read respuesta
+#######################################################
+#####          Seccio de backup y update          #####
+#######################################################
 
-if [ $respuesta -eq 1 ];
+
+echo "Bienvenido, se muestran los directorios: "
+c=0
+#Se listan los directorios que estan en /var/www
+for d in /var/www/*; do
+        eval "var$c=$d";
+        echo $c $d
+        c=$((c+1));
+done
+now=$(date +%m-%d-%y-%H%M)
+
+echo "Seleccione uno: "
+read val
+if [ $val -eq 0 ];
 then
-        "Actualizado por el team dinamita"
-elif [ $respuesta -eq 2  ];
+        echo "Se procede a realizar el backup de . Esto puede tardar unos minutos".
+        #drupa={var0::-1}
+        cd $var1
+        sudo tar -czvf /tmp/drupal.$now.tar.gz ../
+	cd -
+	echo "El respaldo se se guardo en /tmp/drupal.$now.tar.gz"
+	echo "Se procede a realizar la actualizacion."
+	posdrup=$(find $var0 -name ".htaccess" | head -n 1| sed 's/\(.*\)\.\(htaccess\)/\1/')
+	cd $posdrup
+	sudo drush up --yes
+	cd -
+	echo "Revise la instalacion de drupal en su navegador y compruebe su funcionalidad, escoja una de las siguientes opciones: "
+	echo "1.- Si funciona"
+	echo "2.- No funciona, quiero regresar a la version anterior"
+	read respuesta
+	if [ $respuesta -eq 1 ];
+	then
+        	echo "Actualizado por el team dinamita"
+	elif [ $respuesta -eq 2  ];
+	then
+        	echo "Regresando a la version anterior espere un momento"
+        	echo /tmp/drupal.$now.tar.gz
+		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www
+		sudo rm -rf $var0
+		sudo mv /var/www/drupal.$now $var0
+	else
+        	echo "Opcion no valida"
+	fi
+
+elif [ $val -eq 1 ];
 then
-        echo "Regresando a la version anterior espere un momento"
-        echo $FILE.$drupa.tar.gz
-        cd ..
-        sudo tar -xzvf $FILE.$drupa.tar.gz
-else
-        echo "Opcion no valida"
+        echo "Se procede a realizar el backup de $var1. Esto puede tardar unos minutos".
+        #drupa={var0::-1}
+	cd $var1
+        sudo tar -czvf /tmp/drupal.$now.tar.gz ../
+	echo "El respaldo se se guardo en /tmp/drupal.$now.tar.gz"
+	cd -
+	echo "Se procede a realizar la actualizacion."
+	posdrup=$(find $var1 -name ".htaccess" | head -n 1| sed 's/\(.*\)\.\(htaccess\)/\1/')
+	echo $posdrup
+	cd $posdrup
+	sudo drush up --yes
+	cd -
+	echo "Revise la instalacion de drupal en su navegador y compruebe su funcionalidad, escoja una de las siguientes opciones: "
+	echo "1.- Si funciona"
+	echo "2.- No funciona, quiero regresar a la version anterior"
+	read respuesta
+
+	if [ $respuesta -eq 1 ];
+	then
+		echo "Actualizado por el team dinamita"
+	elif [ $respuesta -eq 2  ];
+	then
+        	echo "Regresando a la version anterior espere un momento"
+        	echo /tmp/drupal.$now.tar.gz
+		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www
+		sudo rm -rf $var1
+		sudo mv /var/www/drupal.$now $var1
+	else
+        	echo "Opcion no valida"
+	fi
+elif [[ $val -eq 2 ]]
+then
+        echo "Se procede a realizar el backup de . Esto puede tardar unos minutos".
+        #drupa={var2::-1}
+	cd $var1
+        sudo tar -czvf /tmp/drupal.$now.tar.gz ../
+	cd -
+	echo "El respaldo se se guardo en /tmp/drupal.$now.tar.gz"
+
+	echo "Se procede a realizar la actualizacion."
+	posdrup=$(find $var2 -name ".htaccess" | head -n 1| sed 's/\(.*\)\.\(htaccess\)/\1/')
+	echo $posdrup
+	cd $posdrup
+	sudo drush up --yes
+	echo "Revise la instalacion de drupal en su navegador y compruebe su funcionalidad, escoja una de las siguientes opciones: "
+	echo "1.- Si funciona"
+	echo "2.- No funciona, quiero regresar a la version anterior"
+	read respuesta
+
+	if [ $respuesta -eq 1 ];
+	then
+        	echo "Actualizado por el team dinamita"
+	elif [ $respuesta -eq 2  ];
+	then
+        	echo "Regresando a la version anterior espere un momento"
+        	echo /tmp/drupal.$now.tar.gz
+		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www
+		sudo rm -rf $var2
+		sudo mv /var/www/drupal.$now $var2
+	else
+        	echo "Opcion no valida"
+	fi
+elif [[ $val -eq 3 ]]
+then
+        echo "Se procede a realizar el backup de . Esto puede tardar unos minutos".
+        #drupa={var3::-1}
+        cd $var1
+        sudo tar -czvf /tmp/drupal.$now.tar.gz ../
+	cd -
+	echo "El respaldo se se guardo en /tmp/drupal.$now.tar.gz"
+
+	echo "Se procede a realizar la actualizacion."
+	posdrup=$(find $var1 -name ".htaccess" | head -n 1| sed 's/\(.*\)\.\(htaccess\)/\1/')
+	echo $posdrup
+	cd $posdrup
+	sudo drush up --yes
+	echo "Revise la instalacion de drupal en su navegador y compruebe su funcionalidad, escoja una de las siguientes opciones de instalcion de drupal: "
+	echo "1.- Si funciona"
+	echo "2.- No funciona, quiero regresar a la version anterior"
+	read respuesta
+
+	if [ $respuesta -eq 1 ];
+	then
+        	"Actualizado por el team dinamita"
+	elif [ $respuesta -eq 2  ];
+	then
+        	echo "Regresando a la version anterior espere un momento"
+        	echo /tmp/drupal.$now.tar.gz
+        	sudo tar -xvf /tmp/drupal.$now.tar.gz /var/www
+		sudo rm -rf $var3
+		sudo mv /var/www/drupal.$now $var3
+	else
+        	echo "Opcion no valida"
+	fi
 fi
+
 
