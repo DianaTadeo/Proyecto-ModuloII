@@ -92,9 +92,9 @@ then
 	then
         	echo "Regresando a la version anterior espere un momento"
         	echo /tmp/drupal.$now.tar.gz
-		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www
 		sudo rm -rf $var0
-		sudo mv /var/www/drupal.$now $var0
+		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www/
+		ls /var/www
 	else
         	echo "Opcion no valida"
 	fi
@@ -125,9 +125,9 @@ then
 	then
         	echo "Regresando a la version anterior espere un momento"
         	echo /tmp/drupal.$now.tar.gz
-		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www
 		sudo rm -rf $var1
-		sudo mv /var/www/drupal.$now $var1
+		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www/
+		ls /var/www
 	else
         	echo "Opcion no valida"
 	fi
@@ -157,9 +157,9 @@ then
 	then
         	echo "Regresando a la version anterior espere un momento"
         	echo /tmp/drupal.$now.tar.gz
-		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www
 		sudo rm -rf $var2
-		sudo mv /var/www/drupal.$now $var2
+		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www/
+		ls /var/www
 	else
         	echo "Opcion no valida"
 	fi
@@ -189,9 +189,9 @@ then
 	then
         	echo "Regresando a la version anterior espere un momento"
         	echo /tmp/drupal.$now.tar.gz
-        	sudo tar -xvf /tmp/drupal.$now.tar.gz /var/www
 		sudo rm -rf $var3
-		sudo mv /var/www/drupal.$now $var3
+		sudo tar -xvf /tmp/drupal.$now.tar.gz -C /var/www/
+		ls /var/www
 	else
         	echo "Opcion no valida"
 	fi
