@@ -28,7 +28,7 @@ else
         echo "No se encuentra instalado git. Instalando"
         sudo yum install git
 fi
-if isinstalled composer; then
+if isinstalled2 composer; then
         echo `composer --version`
 else
         echo "No se encuentra instalado composer. Instalando"
@@ -39,7 +39,7 @@ else
 	composer --version
 fi
 
-if isinstalled drush; then
+if isinstalled2 drush; then
         echo `drush --version`
 else
         echo "No se encuentra instalado drush. Instalando"
